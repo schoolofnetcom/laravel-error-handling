@@ -7,13 +7,22 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use CustomExcection;
+
+    protected function context()
+    {
+        return array_merge(parent::context(), [
+            'my custom global log' => 'global log',
+        ]);
+    }
+
     /**
      * A list of the exception types that are not reported.
      *
      * @var array
      */
     protected $dontReport = [
-        //
+        // MyCustomException::class,
     ];
 
     /**
@@ -50,6 +59,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if($request->expectsJson()) {
+            return $this->myCustomErrors($request, $exception);
+        }
+
         return parent::render($request, $exception);
     }
 }

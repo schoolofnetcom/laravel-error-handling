@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\MyCustomException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::resource('products', 'ProductController');
+Route::resource('categories', 'ProductController');
+
+Route::get('my-test', function(){
+    throw new MyCustomException();
 });
+
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
